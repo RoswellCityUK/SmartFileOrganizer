@@ -26,3 +26,8 @@ profile = "black"
 [tool.mypy]
 strict = true
 ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "--cov=src --cov-report=term-missing"
+testpaths = ["tests"]
+pythonpath = ["src"]
