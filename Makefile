@@ -4,7 +4,7 @@ install:
 	pip install --upgrade pip
 	pip install -e .
 	pip install pytest pytest-cov black mypy pre-commit
-	pip install matplotlib
+	pre-commit install
 
 test:
 	pytest
@@ -30,4 +30,5 @@ build:
 	@echo "Build complete. Binary is located at dist/smart-organizer"
 
 benchmark:
+	pip install matplotlib
 	python scripts/benchmark.py
