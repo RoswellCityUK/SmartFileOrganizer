@@ -3,5 +3,5 @@ __pycache__/
 .env
 .venv/
 .pytest_cache/
-src/smart_file_organizer.egg-info/
+*.egg-info/
 *.log
