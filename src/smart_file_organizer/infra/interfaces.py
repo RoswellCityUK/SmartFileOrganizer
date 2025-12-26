@@ -30,3 +30,8 @@ class FileSystemProvider(ABC):
     def mkdir(self, path: Path) -> None:
         """Create directory recursively."""
         pass
+
+    @abstractmethod
+    def rmdir(self, path: Path) -> None:
+        """Remove an empty directory."""
+        pass
