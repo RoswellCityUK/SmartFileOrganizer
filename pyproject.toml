@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smart_file_organizer"
+version = "0.1.0"
+authors = [{name = "RoswellCityUk", email = "93608245+RoswellCityUK@users.noreply.github.com"}]
+description = "An intelligent, automated file organization agent with architectural safety."
+requires-python = ">=3.10"
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
