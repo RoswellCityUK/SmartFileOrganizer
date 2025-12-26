@@ -1,6 +1,7 @@
 import argparse
 import sys
 import logging
+import logging.handlers
 from pathlib import Path
 from ..container import ServiceContainer
 from ..core.rules import DateRule, ExtensionRule
@@ -9,12 +10,26 @@ from ..use_cases.scanner import DirectoryScanner
 from ..use_cases.dedupe import DuplicateFinder
 
 def setup_logging(verbose: bool):
-    level = logging.DEBUG if verbose else logging.INFO
-    logging.basicConfig(
-        level=level,
-        format='%(message)s',
-        handlers=[logging.StreamHandler(sys.stdout)]
+    """Configures logging: Detailed to file, Simple to Console."""
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.DEBUG) # Capture everything globally
+
+    # 1. Console Handler (Standard Output)
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_level = logging.DEBUG if verbose else logging.INFO
+    console_handler.setLevel(console_level)
+    console_format = logging.Formatter('%(message)s')
+    console_handler.setFormatter(console_format)
+    root_logger.addHandler(console_handler)
+
+    # Rotates logs at 1MB, keeps 3 backups
+    file_handler = logging.handlers.RotatingFileHandler(
+        "smart_organizer.log", maxBytes=1_000_000, backupCount=3
     )
+    file_handler.setLevel(logging.DEBUG)
+    file_format = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    file_handler.setFormatter(file_format)
+    root_logger.addHandler(file_handler)
 
 def handle_scan(args):
     """Handler for the 'scan' subcommand."""
