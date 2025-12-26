@@ -150,4 +150,4 @@ The codebase follows **Clean Architecture** principles:
 ### Dependency Injection
 
 The `ServiceContainer` wires these layers together.  
-It injects the `DryRunFileSystem` by default, ensuring **Safe Mode** is physically incapable of writing to disk—write methods are virtual mocks.
+It injects the `DryRunFileSystem` by default, ensuring **Safe Mode** is physically incapable of writing to disk - write methods are virtual mocks.
