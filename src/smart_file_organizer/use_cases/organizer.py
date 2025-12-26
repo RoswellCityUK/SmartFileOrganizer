@@ -76,7 +76,7 @@ class Organizer:
             
             if not any(self.fs.scandir(path)):
                 self.logger.info(f"Removing empty directory: {path}")
-                self.fs.remove(path)
+                self.fs.rmdir(path)
         except (OSError, PermissionError):
             pass # Skip locked folders
 
