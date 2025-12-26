@@ -3,6 +3,8 @@ import sys
 import logging
 from pathlib import Path
 from ..container import ServiceContainer
+from ..core.rules import DateRule, ExtensionRule
+from ..use_cases.organizer import Organizer
 from ..use_cases.scanner import DirectoryScanner
 from ..use_cases.dedupe import DuplicateFinder
 
@@ -91,6 +93,45 @@ def handle_dedupe(args):
     print(f"\nTotal Wasted Space: {total_wasted / (1024*1024):.2f} MB")
     print(f"Duplicate Groups: {len(duplicates)}")
 
+def handle_organize(args):
+    dry_run = not args.execute
+    container = ServiceContainer(dry_run=dry_run)
+    root_path = Path(args.root).resolve()
+    
+    print(f"--- File Organizer ---")
+    print(f"Mode: {'DRY RUN' if dry_run else 'LIVE EXECUTION'}")
+    print(f"Target: {root_path}")
+    
+    if args.by_ext:
+        rule = ExtensionRule()
+        print("Strategy: Sort by Extension")
+    else:
+        rule = DateRule()
+        print("Strategy: Sort by Date (Year/Month)")
+
+    print("Scanning...")
+    scanner = DirectoryScanner(container.fs)
+    files = list(scanner.scan(root_path))
+    
+    organizer = Organizer(container.fs)
+    plan = organizer.plan_organization(files, rule, root_path)
+    
+    print(f"Proposed Actions: {len(plan)}")
+    
+    if not dry_run and plan:
+        confirm = input(f"Proceed with moving {len(plan)} files? [y/N]: ")
+        if confirm.lower() != 'y':
+            print("Operation aborted.")
+            return
+
+    organizer.execute_plan(plan)
+    
+    if args.cleanup:
+        print("Cleaning up empty directories...")
+        organizer.cleanup_empty_dirs(root_path)
+        
+    print("Done.")
+
 def main():
     parser = argparse.ArgumentParser(description="Smart File Organizer CLI")
     parser.add_argument("--verbose", "-v", action="store_true", help="Enable detailed logging")
@@ -105,6 +146,13 @@ def main():
     dedupe_parser = subparsers.add_parser("dedupe", help="Find duplicate files")
     dedupe_parser.add_argument("--root", type=str, default=".", help="Root directory to scan")
     dedupe_parser.set_defaults(func=handle_dedupe)
+
+    org_parser = subparsers.add_parser("organize", help="Organize files into folders")
+    org_parser.add_argument("--root", type=str, default=".", help="Root directory")
+    org_parser.add_argument("--by-ext", action="store_true", help="Sort by file extension")
+    org_parser.add_argument("--by-date", action="store_true", default=True, help="Sort by modification date (Default)")
+    org_parser.add_argument("--cleanup", action="store_true", help="Remove empty directories after move")
+    org_parser.set_defaults(func=handle_organize)
 
     args = parser.parse_args()
     setup_logging(args.verbose)
