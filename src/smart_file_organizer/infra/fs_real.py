@@ -20,3 +20,6 @@ class RealFileSystem(FileSystemProvider):
 
     def mkdir(self, path: Path) -> None:
         os.makedirs(str(path), exist_ok=True)
+
+    def rmdir(self, path: Path) -> None:
+        os.rmdir(str(path))

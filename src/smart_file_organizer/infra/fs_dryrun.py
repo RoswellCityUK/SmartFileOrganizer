@@ -28,3 +28,6 @@ class DryRunFileSystem(FileSystemProvider):
 
     def mkdir(self, path: Path) -> None:
         self.logger.info(f"[DRY RUN] MKDIR: '{path}'")
+
+    def rmdir(self, path: Path) -> None:
+        self.logger.info(f"[DRY RUN] RMDIR: '{path}'")
