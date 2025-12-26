@@ -10,8 +10,19 @@ description = "An intelligent, automated file organization agent with architectu
 requires-python = ">=3.10"
 dependencies = []
 
+[project.scripts]
+smart-organizer = "smart_file_organizer.cli.main:main"
+
 [tool.setuptools.packages.find]
 where = ["src"]
 
-[project.scripts]
-smart-organizer = "smart_file_organizer.cli.main:main"
+[tool.black]
+line-length = 88
+target-version = ['py310']
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
