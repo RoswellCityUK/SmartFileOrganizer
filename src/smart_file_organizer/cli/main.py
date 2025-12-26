@@ -4,13 +4,13 @@ import logging
 import logging.handlers
 from pathlib import Path
 from ..container import ServiceContainer
-from ..core.rules import DateRule, ExtensionRule
+from ..core.rules import DateRule, ExtensionRule, OrganizationRule
 from ..use_cases.organizer import Organizer
 from ..use_cases.scanner import DirectoryScanner
 from ..use_cases.dedupe import DuplicateFinder
 
 
-def setup_logging(verbose: bool):
+def setup_logging(verbose: bool) -> None:
     """Configures logging: Detailed to file, Simple to Console."""
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.DEBUG)  # Capture everything globally
@@ -35,7 +35,7 @@ def setup_logging(verbose: bool):
     root_logger.addHandler(file_handler)
 
 
-def handle_scan(args):
+def handle_scan(args: argparse.Namespace) -> None:
     """Handler for the 'scan' subcommand."""
     dry_run = not args.execute
     container = ServiceContainer(dry_run=dry_run)
@@ -80,7 +80,7 @@ def handle_scan(args):
     print(f"\nTotal Files: {count}")
 
 
-def handle_dedupe(args):
+def handle_dedupe(args: argparse.Namespace) -> None:
     """Handler for the 'dedupe' subcommand."""
     container = ServiceContainer(dry_run=True)
     root_path = Path(args.root).resolve()
@@ -114,7 +114,7 @@ def handle_dedupe(args):
     print(f"Duplicate Groups: {len(duplicates)}")
 
 
-def handle_organize(args):
+def handle_organize(args: argparse.Namespace) -> None:
     dry_run = not args.execute
     container = ServiceContainer(dry_run=dry_run)
     root_path = Path(args.root).resolve()
@@ -123,6 +123,7 @@ def handle_organize(args):
     print(f"Mode: {'DRY RUN' if dry_run else 'LIVE EXECUTION'}")
     print(f"Target: {root_path}")
 
+    rule: OrganizationRule
     if args.by_ext:
         rule = ExtensionRule()
         print("Strategy: Sort by Extension")
@@ -154,7 +155,7 @@ def handle_organize(args):
     print("Done.")
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description="Smart File Organizer CLI")
     parser.add_argument(
         "--verbose", "-v", action="store_true", help="Enable detailed logging"

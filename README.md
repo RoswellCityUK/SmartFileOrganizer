@@ -5,26 +5,26 @@
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![Code Style](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-**The Foundation** — An intelligent, automated agent designed to reclaim order within your file system.  
+**The Foundation** — An intelligent, automated agent designed to reclaim order within your file system.
 Built with **Clean Architecture** principles and a *Safety First* philosophy.
 
 ---
 
 ## 🚀 Key Features
 
-- **🛡️ Safety by Default**  
+- **🛡️ Safety by Default**
   Always runs in **Dry Run** mode (simulation) unless explicitly authorized to write to disk.
 
-- **🧠 Intelligent Deduplication**  
+- **🧠 Intelligent Deduplication**
   Uses a multi-stage filtering pipeline (Size → Buffered SHA256) to identify duplicates without exhausting RAM.
 
-- **⚡ Parallel Processing**  
+- **⚡ Parallel Processing**
   Leverages multi-core CPUs for high-speed file hashing.
 
-- **🏗️ Clean Architecture**  
+- **🏗️ Clean Architecture**
   Core business logic is completely decoupled from the file system, ensuring stability and testability.
 
-- **🔧 Zero-Dependency Runtime**  
+- **🔧 Zero-Dependency Runtime**
   The core application runs using only the Python Standard Library (`os`, `shutil`, `pathlib`, `hashlib`).
 
 ---
@@ -47,15 +47,15 @@ You can now use the `smart-organizer` command globally.
 
 This project is configured with a **VS Code Dev Container**, providing a fully reproducible environment with all tools pre-installed (`black`, `mypy`, `pytest`).
 
-1. Open the project folder in VS Code  
-2. Click **“Reopen in Container”** when prompted (or use the Command Palette `F1`)  
-3. The environment will build automatically  
+1. Open the project folder in VS Code
+2. Click **“Reopen in Container”** when prompted (or use the Command Palette `F1`)
+3. The environment will build automatically
 
 ---
 
 ## 🛠️ Usage
 
-The tool operates via a **Command Line Interface (CLI)**.  
+The tool operates via a **Command Line Interface (CLI)**.
 All commands default to **Dry Run** mode.
 
 ### 1. Scan a Directory
@@ -136,19 +136,19 @@ pre-commit run --all-files
 
 The codebase follows **Clean Architecture** principles:
 
-- **Domain (Core)**  
+- **Domain (Core)**
   Entities (`FileNode`) and rules (`OrganizationRule`). Zero dependencies.
 
-- **Use Cases**  
+- **Use Cases**
   Application logic (`Organizer`, `DuplicateFinder`, `Scanner`).
 
-- **Infrastructure**  
+- **Infrastructure**
   Implementation details (`RealFileSystem`, `DryRunFileSystem`, `HashService`).
 
-- **CLI**  
+- **CLI**
   Interface adapters (`argparse`, `logging`).
 
 ### Dependency Injection
 
-The `ServiceContainer` wires these layers together.  
+The `ServiceContainer` wires these layers together.
 It injects the `DryRunFileSystem` by default, ensuring **Safe Mode** is physically incapable of writing to disk - write methods are virtual mocks.

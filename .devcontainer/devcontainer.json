@@ -1,7 +1,7 @@
 {
   "name": "SmartFileOrganizer Dev",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
-  
+
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {
       "installMake": true,
@@ -19,5 +19,5 @@
       ]
     }
   },
-  "postCreateCommand": "make install" 
+  "postCreateCommand": "make install"
 }

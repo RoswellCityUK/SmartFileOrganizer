@@ -1,4 +1,4 @@
-from typing import List, Dict, Iterator
+from typing import List, Dict, Iterator, Iterable, Optional
 from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
@@ -6,7 +6,7 @@ from ..core.entities import FileNode
 from ..infra.hashing import HashService
 
 
-def _hash_file_helper(path: Path) -> tuple[Path, str]:
+def _hash_file_helper(path: Path) -> tuple[Path, Optional[str]]:
     service = HashService()
     try:
         return path, service.get_hash(path)
@@ -18,7 +18,7 @@ class DuplicateFinder:
     def __init__(self, hash_service: HashService):
         self.hasher = hash_service
 
-    def find_duplicates(self, files: Iterator[FileNode]) -> Dict[str, List[FileNode]]:
+    def find_duplicates(self, files: Iterable[FileNode]) -> Dict[str, List[FileNode]]:
         """
         Identifies duplicates using parallel processing for the hashing stage.
         """

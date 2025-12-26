@@ -6,7 +6,7 @@ from .interfaces import FileSystemProvider
 
 
 class RealFileSystem(FileSystemProvider):
-    def scandir(self, path: Path) -> Iterator[os.DirEntry]:
+    def scandir(self, path: Path) -> Iterator["os.DirEntry[str]"]:
         return os.scandir(str(path))
 
     def move(self, src: Path, dest: Path) -> None:

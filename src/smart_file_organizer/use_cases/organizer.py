@@ -1,5 +1,5 @@
 import logging
-from typing import List, Iterator
+from typing import List, Iterable, Iterator
 from pathlib import Path
 from ..core.entities import FileNode, ActionRecord, ActionType
 from ..core.rules import OrganizationRule
@@ -12,7 +12,7 @@ class Organizer:
         self.logger = logging.getLogger(__name__)
 
     def plan_organization(
-        self, files: Iterator[FileNode], rule: OrganizationRule, root: Path
+        self, files: Iterable[FileNode], rule: OrganizationRule, root: Path
     ) -> List[ActionRecord]:
         """Generates a list of safe move operations based on the rule."""
         plan = []
@@ -35,7 +35,7 @@ class Organizer:
             )
         return plan
 
-    def execute_plan(self, plan: List[ActionRecord]):
+    def execute_plan(self, plan: List[ActionRecord]) -> None:
         """Executes the action plan using the FileSystemProvider."""
         success_count = 0
         fail_count = 0
@@ -71,11 +71,11 @@ class Organizer:
         print(f"  - Successful Moves: {success_count}")
         print(f"  - Failed Operations: {fail_count}")
 
-    def cleanup_empty_dirs(self, root: Path):
+    def cleanup_empty_dirs(self, root: Path) -> None:
         """Recursively removes empty directories (Bottom-Up)."""
         self._remove_empty_recursive(root)
 
-    def _remove_empty_recursive(self, path: Path):
+    def _remove_empty_recursive(self, path: Path) -> None:
         if not self.fs.exists(path):
             return
 

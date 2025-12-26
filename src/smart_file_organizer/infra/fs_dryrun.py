@@ -1,17 +1,17 @@
 import logging
 from pathlib import Path
-from typing import Iterator, Dict
+from typing import Iterator, Dict, Any
 from .interfaces import FileSystemProvider
 from .fs_real import RealFileSystem
 
 
 class DryRunFileSystem(FileSystemProvider):
-    def __init__(self):
+    def __init__(self) -> None:
         self._real_fs = RealFileSystem()
         self.logger = logging.getLogger("DryRun")
         self.virtual_state: Dict[Path, Path] = {}
 
-    def scandir(self, path: Path) -> Iterator:
+    def scandir(self, path: Path) -> Iterator[Any]:
         return self._real_fs.scandir(path)
 
     def move(self, src: Path, dest: Path) -> None:
