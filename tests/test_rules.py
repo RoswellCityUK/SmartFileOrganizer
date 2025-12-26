@@ -4,11 +4,12 @@ from pathlib import Path
 from smart_file_organizer.core.entities import FileNode
 from smart_file_organizer.core.rules import ExtensionRule, DateRule
 
+
 class TestRules(unittest.TestCase):
     def test_extension_rule(self):
         rule = ExtensionRule()
         root = Path("/tmp")
-        
+
         node = FileNode(path=Path("doc.txt"), size=10, mtime=0)
         dest = rule.get_destination(node, root)
         self.assertEqual(dest, Path("/tmp/TXT"))
@@ -20,13 +21,14 @@ class TestRules(unittest.TestCase):
     def test_date_rule(self):
         rule = DateRule()
         root = Path("/tmp")
-        
+
         dt = datetime(2023, 10, 15)
         ts = dt.timestamp()
-        
+
         node = FileNode(path=Path("photo.jpg"), size=100, mtime=ts)
         dest = rule.get_destination(node, root)
         self.assertEqual(dest, Path("/tmp/2023/10"))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

@@ -4,6 +4,7 @@ from typing import Iterator, List
 from ..core.entities import FileNode
 from ..infra.interfaces import FileSystemProvider
 
+
 class DirectoryScanner:
     def __init__(self, fs_provider: FileSystemProvider):
         self.fs = fs_provider
@@ -16,7 +17,7 @@ class DirectoryScanner:
         Yields FileNode entities for every file found.
         """
         self.logger.info(f"Scanning root: {root_path}")
-        
+
         resolved_root = root_path.resolve()
 
         if not self.fs.exists(resolved_root):
@@ -31,13 +32,13 @@ class DirectoryScanner:
                 try:
                     if entry.is_dir(follow_symlinks=False):
                         yield from self._recursive_scan(Path(entry.path))
-                    
+
                     elif entry.is_file(follow_symlinks=False):
                         stat = entry.stat()
                         yield FileNode(
                             path=Path(entry.path).resolve(),
                             size=stat.st_size,
-                            mtime=stat.st_mtime
+                            mtime=stat.st_mtime,
                         )
                 except (PermissionError, OSError) as e:
                     self.errors.append(f"Access denied: {entry.path}")

@@ -3,6 +3,7 @@ from .infra.fs_real import RealFileSystem
 from .infra.fs_dryrun import DryRunFileSystem
 from .infra.hashing import HashService
 
+
 class ServiceContainer:
     def __init__(self, dry_run: bool = True):
         self.dry_run = dry_run

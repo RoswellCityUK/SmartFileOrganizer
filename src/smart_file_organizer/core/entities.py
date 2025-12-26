@@ -7,6 +7,7 @@ from typing import Optional
 @dataclass(frozen=True)
 class FileNode:
     """Represents a file in the system with cached metadata."""
+
     path: Path
     size: int
     mtime: float
@@ -22,6 +23,7 @@ class ActionType(Enum):
 @dataclass(frozen=True)
 class ActionRecord:
     """Immutable record of a planned operation."""
+
     action_type: ActionType
     src_path: Path
     dest_path: Optional[Path]
