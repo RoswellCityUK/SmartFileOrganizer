@@ -33,17 +33,32 @@ class Organizer:
     def execute_plan(self, plan: List[ActionRecord]):
         """Executes the action plan using the FileSystemProvider."""
         success_count = 0
-        for action in plan:
+        fail_count = 0
+        total_actions = len(plan)
+        
+        print(f"Executing {total_actions} operations...")
+        
+        for index, action in enumerate(plan, 1):
             try:
+                print(f"\rProcessing {index}/{total_actions}: {action.src_path.name[:30]}...", end="", flush=True)
+
                 if action.action_type == ActionType.MOVE:
                     if action.dest_path:
                         self.fs.mkdir(action.dest_path.parent)
                         self.fs.move(action.src_path, action.dest_path)
                         success_count += 1
+                        
             except (OSError, PermissionError) as e:
+                fail_count += 1
                 self.logger.error(f"Failed to move {action.src_path}: {e}")
         
-        self.logger.info(f"Successfully moved {success_count} files.")
+        # Clear progress line
+        print("\r" + " " * 60 + "\r", end="")
+        
+        self.logger.info(f"Execution Complete. Success: {success_count}, Failed: {fail_count}")
+        print(f"Execution Summary:")
+        print(f"  - Successful Moves: {success_count}")
+        print(f"  - Failed Operations: {fail_count}")
 
     def cleanup_empty_dirs(self, root: Path):
         """Recursively removes empty directories (Bottom-Up)."""
