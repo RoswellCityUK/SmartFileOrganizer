@@ -16,5 +16,14 @@ format:
 	black src tests
 
 clean:
-	rm -rf build dist *.egg-info .pytest_cache .coverage
+	rm -rf build dist *.egg-info *.spec .pytest_cache .coverage
 	find . -type d -name "__pycache__" -exec rm -rf {} +
+
+build:
+	pip install pyinstaller
+	pyinstaller --name smart-organizer \
+		--onefile \
+		--clean \
+		--paths src \
+		src/run.py
+	@echo "Build complete. Binary is located at dist/smart-organizer"
