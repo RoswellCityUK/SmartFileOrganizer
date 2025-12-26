@@ -1,0 +1,6 @@
+Metadata-Version: 2.4
+Name: smart_file_organizer
+Version: 0.1.0
+Summary: An intelligent, automated file organization agent with architectural safety.
+Author-email: RoswellCityUk <93608245+RoswellCityUK@users.noreply.github.com>
+Requires-Python: >=3.10
