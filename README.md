@@ -115,7 +115,7 @@ This project uses a **Makefile** to standardize common development tasks.
 
 ### Running Tests
 
-The project enforces **100% code coverage**.
+The project enforces **100% code coverage** (at least trying too... currently 97%).
 
 ```bash
 make test
